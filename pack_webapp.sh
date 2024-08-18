@@ -15,5 +15,5 @@ if [ "$(uname)" == 'Darwin' ]; then
 fi
 
 cd ..
-mkdir WebApp/bin~
+mkdir -p WebApp/bin~
 mv WebApp/$app_name WebApp/bin~

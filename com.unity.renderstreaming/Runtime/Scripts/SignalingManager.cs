@@ -190,7 +190,7 @@ namespace Unity.RenderStreaming
             )
         {
             var settings = m_useDefault ? RenderStreaming.GetSignalingSettings<SignalingSettings>() : signalingSettings;
-            Debug.Log($"_run got {settings}");
+            Debug.Log($"_run got {settings} with {settings.iceServers.Count} ICE servers");
 #if !UNITY_EDITOR
             var arguments = Environment.GetCommandLineArgs();
             if (evaluateCommandlineArguments && arguments.Length > 1)
@@ -201,15 +201,17 @@ namespace Unity.RenderStreaming
                 }
             }
 #endif
-            // Forcibly disable ICEServer functionality
-            //int i = 0;
-            //RTCIceServer[] iceServers = new RTCIceServer[settings.iceServers.Count()];
-            RTCIceServer[] iceServers = Array.Empty<RTCIceServer>();
-            /*foreach (var iceServer in settings.iceServers)
+            int i = 0;
+            var iceServers = new RTCIceServer[settings.iceServers.Count];
+            foreach (var iceServer in settings.iceServers)
             {
+                foreach (var url in iceServer.urls)
+                {
+                    Debug.Log($"Adding ICE Server URL: {url}");
+                }
                 iceServers[i] = (RTCIceServer)iceServer;
                 i++;
-            }*/
+            }
             RTCConfiguration _conf =
                 conf.GetValueOrDefault(new RTCConfiguration { iceServers = iceServers });
 
@@ -279,7 +281,6 @@ namespace Unity.RenderStreaming
 
         void Awake()
         {
-            return;
             if (!runOnAwake || m_running || handlers.Count == 0)
                 return;
 

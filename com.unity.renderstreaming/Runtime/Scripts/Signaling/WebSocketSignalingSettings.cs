@@ -7,13 +7,13 @@ using UnityEngine;
 namespace Unity.RenderStreaming
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [Serializable, SignalingType("websocket")]
     public class WebSocketSignalingSettings : SignalingSettings
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Type signalingClass => typeof(WebSocketSignaling);
 
@@ -34,11 +34,11 @@ namespace Unity.RenderStreaming
         protected IceServer[] m_iceServers;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="url"></param>
         /// <param name="iceServers"></param>
-        public WebSocketSignalingSettings(string url, IceServer[] iceServers = null)
+        public WebSocketSignalingSettings(string url)
         {
             if (url == null)
                 throw new ArgumentNullException("url");
@@ -46,15 +46,20 @@ namespace Unity.RenderStreaming
                 throw new ArgumentException("url is not well formed Uri");
 
             m_url = url;
-            m_iceServers = iceServers == null ? Array.Empty<IceServer>() : iceServers.Select(server => server.Clone()).ToArray();
+
+            m_iceServers = new[]
+            {
+                new IceServer (urls: new[] {"stun:stun.l.google.com:19302"})
+            };
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public WebSocketSignalingSettings()
         {
             m_url = "ws://127.0.0.1";
+
             m_iceServers = new[]
             {
                 new IceServer (urls: new[] {"stun:stun.l.google.com:19302"})
