@@ -190,7 +190,6 @@ namespace Unity.RenderStreaming
             )
         {
             var settings = m_useDefault ? RenderStreaming.GetSignalingSettings<SignalingSettings>() : signalingSettings;
-            Debug.Log($"_run got {settings} with {settings.iceServers.Count} ICE servers");
 #if !UNITY_EDITOR
             var arguments = Environment.GetCommandLineArgs();
             if (evaluateCommandlineArguments && arguments.Length > 1)

@@ -10,7 +10,7 @@ namespace Unity.RenderStreaming
     public class HttpSignalingSettings : SignalingSettings
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Type signalingClass => typeof(HttpSignaling);
 
@@ -37,7 +37,7 @@ namespace Unity.RenderStreaming
         protected IceServer[] m_iceServers;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="url"></param>
         /// <param name="iceServers"></param>
@@ -55,7 +55,7 @@ namespace Unity.RenderStreaming
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public HttpSignalingSettings()
         {
@@ -68,7 +68,7 @@ namespace Unity.RenderStreaming
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="argumetns"></param>
         /// <returns></returns>
@@ -124,6 +124,11 @@ namespace Unity.RenderStreaming
 
             if (CommandLineParser.PollingInterval.Value != null)
                 m_interval = CommandLineParser.PollingInterval.Value.Value;
+
+            foreach (var i in m_iceServers)
+            {
+                Debug.Log($"ICE {i.urls}");
+            }
             return true;
         }
     }

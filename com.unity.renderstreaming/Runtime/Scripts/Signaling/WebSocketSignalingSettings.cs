@@ -33,37 +33,16 @@ namespace Unity.RenderStreaming
         [SerializeField, Tooltip("Set a list of STUN/TURN servers.")]
         protected IceServer[] m_iceServers;
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="iceServers"></param>
-        public WebSocketSignalingSettings(string url)
+        public WebSocketSignalingSettings(string url = "ws://127.0.0.1", ICollection<string> iceServers = null)
         {
             if (url == null)
                 throw new ArgumentNullException("url");
             if (!Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute))
                 throw new ArgumentException("url is not well formed Uri");
+            iceServers ??= new[] { "stun:stun.l.google.com:19302" };
 
             m_url = url;
-
-            m_iceServers = new[]
-            {
-                new IceServer (urls: new[] {"stun:stun.l.google.com:19302"})
-            };
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public WebSocketSignalingSettings()
-        {
-            m_url = "ws://127.0.0.1";
-
-            m_iceServers = new[]
-            {
-                new IceServer (urls: new[] {"stun:stun.l.google.com:19302"})
-            };
+            m_iceServers = iceServers.Select(s => new IceServer(urls: new[] { s })).ToArray();
         }
 
         public override bool ParseArguments(string[] arguments)

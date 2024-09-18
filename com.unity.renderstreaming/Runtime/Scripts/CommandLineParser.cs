@@ -17,7 +17,7 @@ namespace Unity.RenderStreaming
         public string pollingInterval;
     }
 
-    static class CommandLineParser
+    public static class CommandLineParser
     {
         internal static readonly StringArgument SignalingUrl = new StringArgument("-signalingUrl");
         internal static readonly StringArgument SignalingType = new StringArgument("-signalingType");
@@ -46,20 +46,31 @@ namespace Unity.RenderStreaming
             public string ArgumentName { get; }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public bool Defined => m_defined;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public readonly bool Required;
 
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public T Value => m_value;
+            public T Value
+            {
+                get { return m_value; }
+                set
+                {
+                    if (m_defined)
+                    {
+                        Debug.LogWarning($"Overwriting argument {ArgumentName}: was {m_value}, is {value}");
+                    }
+                    m_value = value;
+                }
+            }
 
             protected bool m_defined;
             protected T m_value;
